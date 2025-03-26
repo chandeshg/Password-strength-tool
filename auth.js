@@ -1,0 +1,13 @@
+// ...existing code...
+
+function onRegisterSuccess() {
+    // ...existing code...
+    window.location.href = '/password-tool.html'; // Redirect to password strength tool
+}
+
+function onSignInSuccess() {
+    // ...existing code...
+    window.location.href = '/password-tool.html'; // Redirect to password strength tool
+}
+
+// ...existing code...
