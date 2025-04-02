@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+        <div class="content">
+            <h2>Manage Users</h2>
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User rows will be dynamically populated -->
+                </tbody>
+            </table>
+            <p id="no-data-message" class="no-data-message">No users found.</p>
+        </div>
+    </div>
+    <script src="./js/admin.js"></script>
+</body>
+</html>
