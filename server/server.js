@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { registerUser, authenticateUser } = require('./auth');
+const { registerUser, authenticateUser } = require('../auth');
 
 const app = express();
 app.use(express.json());

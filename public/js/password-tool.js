@@ -55,14 +55,6 @@ function checkPasswordStrength() {
     document.getElementById('password-strength-result').textContent = `Strength: ${strength.score}/4 - ${strength.feedback.suggestions.join(' ') || 'Good password!'}`;
 }
 
-// Password Entropy Calculator
-function calculateEntropy() {
-    const password = document.getElementById('entropy-password').value;
-    const uniqueChars = new Set(password).size;
-    const entropy = Math.log2(Math.pow(uniqueChars, password.length));
-    document.getElementById('entropy-result').textContent = `Entropy: ${entropy.toFixed(2)} bits`;
-}
-
 // Password History Checker
 const passwordHistory = []; // Store previously used passwords locally
 function checkPasswordHistory() {
