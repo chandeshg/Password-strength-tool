@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.2",
     "mysql2": "^3.14.0",
     "zxcvbn": "^4.4.2"
@@ -8,7 +9,6 @@
   "version": "1.0.0",
   "description": "��\r\u0000 \u0000H\u0000E\u0000A\u0000D\u0000\r\u0000 \u00005\u00007\u0000b\u0000b\u00008\u00008\u00004\u00008\u0000a\u0000f\u0000e\u0000e\u00008\u0000f\u00000\u00004\u0000e\u00001\u00000\u00001\u0000e\u00007\u0000b\u00000\u00001\u0000b\u0000e\u0000f\u0000d\u0000a\u0000e\u0000c\u0000b\u00007\u00004\u0000d\u0000e\u0000f\u0000f\u00002\u0000\r\u0000 \u0000\r\u0000 \u0000",
   "main": "auth.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

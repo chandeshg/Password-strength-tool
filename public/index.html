@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Password Generator</title>
+    <title>Home - SecurePass</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/index.css">
-    <script src="./js/password-tool.js" defer></script>
 </head>
 <body>
     <header>
-        <div class="logo">tech.site</div>
+        <div class="logo">SecurePass</div>
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
@@ -20,32 +19,68 @@
         </nav>
     </header>
     <main>
-        <div class="split-layout">
-            <div class="left-section">
-                <h1>Welcome to Your Dashboard</h1>
-                <p>Manage your passwords and generate secure ones with ease.</p>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Secure Your Digital Life</h1>
+                <p>Generate strong passwords, check their strength, and protect your accounts with SecurePass.</p>
+                <a href="signup.html" class="cta-btn">Get Started Free</a>
             </div>
-            <div class="right-section">
-                <div class="tool-container">
-                    <h2>Customize your password</h2>
-                    <label for="password-length">Password length</label>
-                    <input type="range" id="password-length" min="8" max="32" value="12" oninput="updatePasswordLength(this.value)">
-                    <span id="password-length-value">12</span>
-                    <div class="toggles">
-                        <label>
-                            <input type="checkbox" id="include-numbers" checked>
-                            Numbers
-                        </label>
-                        <label>
-                            <input type="checkbox" id="include-symbols" checked>
-                            Symbols
-                        </label>
-                    </div>
-                    <button onclick="generatePassword()">Generate Password</button>
-                    <p id="generated-password" class="output-box"></p>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Why Choose SecurePass?</h2>
+            <div class="feature-list">
+                <div class="feature">
+                    <img src="./images/password-icon.png" alt="Password Generator">
+                    <h3>Password Generator</h3>
+                    <p>Create strong, unique passwords for all your accounts.</p>
+                </div>
+                <div class="feature">
+                    <img src="./images/strength-icon.png" alt="Password Strength Checker">
+                    <h3>Password Strength Checker</h3>
+                    <p>Ensure your passwords are secure and hard to crack.</p>
+                </div>
+                <div class="feature">
+                    <img src="./images/email-icon.png" alt="Email Breach Checker">
+                    <h3>Email Breach Checker</h3>
+                    <p>Check if your email has been compromised in a data breach.</p>
+                </div>
+                <div class="feature">
+                    <img src="./images/storage-icon.png" alt="Secure Storage">
+                    <h3>Secure Storage</h3>
+                    <p>Store your passwords securely in one place.</p>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Step 1</h3>
+                    <p>Generate a secure password using our tool.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 2</h3>
+                    <p>Check the strength of your password.</p>
+                </div>
+                <div class="step">
+                    <h3>Step 3</h3>
+                    <p>Store your passwords securely in our vault.</p>
+                </div>
+            </div>
+        </section>
     </main>
+    <footer>
+        <p>&copy; 2025 SecurePass. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </footer>
 </body>
 </html>
