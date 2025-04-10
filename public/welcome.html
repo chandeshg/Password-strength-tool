@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to SecurePass</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./css/welcome.css">
 </head>
 <body>
@@ -23,26 +24,40 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>Simplify Your Life.</h1>
-                <p>Manage your passwords securely so you can focus on what matters most.</p>
-                <a href="signup.html" class="cta-btn">Get Started Free</a>
-            </div>
-            <div class="hero-image">
-                <img src="./images/devices.png" alt="Devices">
+                <h1>Secure Your Digital Identity</h1>
+                <p>Powerful password management tools to keep your accounts safe and secure.</p>
+                <div class="hero-buttons">
+                    <a href="signup.html" class="cta-btn">Get Started Free <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </section>
+
         <section class="features">
             <div class="feature">
-                <img src="./images/premium-icon.png" alt="Premium Icon">
-                <h2>Premium Features</h2>
-                <p>Upgrade to premium for unlimited access and advanced security features.</p>
-                <a href="#" class="btn">Go Premium</a>
+                <div class="feature-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h2>Password Generator</h2>
+                <p>Create strong, unique passwords instantly with our advanced generator.</p>
+                <a href="password-tool.html" class="btn">Try Now</a>
             </div>
+
             <div class="feature">
-                <img src="./images/enterprise-icon.png" alt="Enterprise Icon">
-                <h2>Enterprise Solutions</h2>
-                <p>Centralized password management for teams and businesses.</p>
-                <a href="#" class="btn secondary">Start a Trial</a>
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Security Check</h2>
+                <p>Analyze password strength and check for potential vulnerabilities.</p>
+                <a href="password-tool.html" class="btn">Check Security</a>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h2>Breach Detection</h2>
+                <p>Find out if your email has been compromised in data breaches.</p>
+                <a href="password-tool.html" class="btn">Scan Now</a>
             </div>
         </section>
     </main>

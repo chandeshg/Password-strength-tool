@@ -1,8 +1,15 @@
+:root {
+    --primary-color: #4776E6;
+    --secondary-color: #8E54E9;
+    --text-dark: #2d3436;
+    --text-light: #636e72;
+}
+
 body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: url('../images/login.jpg.jpg') no-repeat center center fixed;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     background-size: cover;
     color: #fff;
     display: flex;
@@ -15,7 +22,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background: rgba(0, 0, 0, 0.8);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: #fff;
     position: fixed;
     width: 100%;
@@ -27,7 +34,7 @@ header {
 header .logo {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #e67e22;
+    color: white;
 }
 
 header nav ul {
@@ -98,7 +105,7 @@ form input {
 form button {
     padding: 10px 20px;
     font-size: 1rem;
-    background: #e67e22;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -117,12 +124,30 @@ form button:hover {
 }
 
 .signup-link a, .login-link a {
-    color: #e67e22;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
 .signup-link a:hover, .login-link a:hover {
     text-decoration: underline;
+}
+
+.error-message {
+    color: #ff4757;
+    background-color: rgba(255, 71, 87, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.error-message:not(:empty) {
+    display: block;
+}
+
+form input.error {
+    border-color: #ff4757;
 }
 
 /* Responsive Design */

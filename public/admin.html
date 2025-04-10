@@ -8,13 +8,22 @@
     <link rel="stylesheet" href="./css/admin.css">
 </head>
 <body>
+    <header>
+        <div class="logo">SecurePass</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin.html">Dashboard</a></li>
+                <li><a href="index.html" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
     <div class="container">
-        <div class="header">
-            <h1>SecurePass Admin Dashboard</h1>
-            <a href="index.html" class="logout-btn">Logout</a>
-        </div>
         <div class="content">
             <h2>Manage Users</h2>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search users by name or email">
+            </div>
             <table id="users-table">
                 <thead>
                     <tr>
@@ -25,12 +34,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- User rows will be dynamically populated -->
+                  
                 </tbody>
             </table>
             <p id="no-data-message" class="no-data-message">No users found.</p>
         </div>
     </div>
+    <footer>
+        <p>&copy; 2025 SecurePass. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </footer>
     <script src="./js/admin.js"></script>
 </body>
 </html>
