@@ -1,22 +1,25 @@
 const mysql = require('mysql2/promise');
-const fs = require('fs').promises;
-const path = require('path');
 
 async function setupDatabase() {
     let connection;
     try {
-        // Create initial connection
+        // Update the username and password to match your MySQL credentials
         connection = await mysql.createConnection({
             host: 'localhost',
-            user: 'root',     // Your MySQL username
-            password: ''      // Your MySQL password
+            user: 'root', // Replace with your MySQL username
+            password: '4444' // Replace with your MySQL password
         });
 
-        // Create and use database
+        console.log('Connected to MySQL server.');
+
+        // Create the database
         await connection.query('CREATE DATABASE IF NOT EXISTS securepass');
+        console.log('Database "securepass" created or already exists.');
+
+        // Use the database
         await connection.query('USE securepass');
 
-        // Create users table
+        // Create the users table
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,9 +29,9 @@ async function setupDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
+        console.log('Table "users" created or already exists.');
 
         console.log('Database setup completed successfully!');
-
     } catch (error) {
         console.error('Error setting up database:', error);
         process.exit(1);
