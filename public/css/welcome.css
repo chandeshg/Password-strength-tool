@@ -18,17 +18,23 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    padding: 1rem 2rem;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border-bottom: 1px solid #ddd;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow);
 }
 
 header .logo {
     font-size: 1.8rem;
     font-weight: bold;
     color: white;
+    text-decoration: none;
 }
 
 header nav ul {
@@ -40,16 +46,27 @@ header nav ul {
 }
 
 header nav ul li a {
-    text-decoration: none;
     color: white;
-    font-size: 1rem;
-    transition: color 0.3s;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
     opacity: 0.9;
 }
 
 header nav ul li a:hover {
     opacity: 1;
-    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+header nav ul li a.login-btn {
+    background: white;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+header nav ul li a.login-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .hero {

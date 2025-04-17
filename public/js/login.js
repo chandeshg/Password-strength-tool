@@ -9,36 +9,54 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
-        errorMessage.textContent = '';
+        const errorMessage = document.querySelector('.error-message') || createErrorElement();
 
-        // Basic client-side validation
-        if (!username || !password) {
-            errorMessage.textContent = 'Please fill in all fields';
-            return;
-        }
+        // Reset any existing error messages
+        errorMessage.textContent = '';
+        errorMessage.style.display = 'none';
 
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('http://localhost:3000/api/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password })
             });
-
+            
             const data = await response.json();
-
+            
             if (response.ok) {
-                // Successful login
-                localStorage.setItem('token', data.token);
-                window.location.href = '/password-tool.html';
+                // Store user data in localStorage
+                localStorage.setItem('userId', data.userId);
+                localStorage.setItem('username', data.username);
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Redirect to tools page
+                window.location.href = 'password-tool.html';
             } else {
-                // Failed login
-                errorMessage.textContent = data.message || 'Invalid username or password';
+                // Show error message
+                errorMessage.textContent = data.message || 'Login failed';
+                errorMessage.style.display = 'block';
             }
         } catch (error) {
-            errorMessage.textContent = 'An error occurred. Please try again.';
             console.error('Login error:', error);
+            errorMessage.textContent = 'Server connection error';
+            errorMessage.style.display = 'block';
         }
     });
+
+    function showError(message) {
+        const errorMessage = document.querySelector('.error-message');
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+    }
+
+    function createErrorElement() {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        const form = document.getElementById('login-form');
+        form.insertBefore(errorDiv, form.firstChild);
+        return errorDiv;
+    }
 });

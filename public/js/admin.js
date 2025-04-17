@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log("Admin page script loaded."); // Debug log
     const usersTableBody = document.querySelector("#users-table tbody");
     const noDataMessage = document.getElementById("no-data-message");
@@ -7,18 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
     paginationContainer.classList.add("pagination");
     document.querySelector(".container").appendChild(paginationContainer);
 
-    const users = [
-        { id: 1, username: "admin", email: "admin@example.com" },
-        { id: 2, username: "user1", email: "user1@example.com" },
-        { id: 3, username: "user2", email: "user2@example.com" },
-        { id: 4, username: "user3", email: "user3@example.com" },
-        { id: 5, username: "user4", email: "user4@example.com" }
-    ];
-
     const rowsPerPage = 3;
     let currentPage = 1;
 
-    function populateTable(filteredUsers) {
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/users');
+            const users = await response.json();
+            updateTable(users);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const populateTable = (filteredUsers) => {
         usersTableBody.innerHTML = "";
         if (filteredUsers.length === 0) {
             noDataMessage.style.display = "block";
@@ -37,23 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${user.email}</td>
                     <td>
                         <button class="edit-btn"><span class="icon">✏️</span>Edit</button>
-                        <button class="delete-btn"><span class="icon">🗑️</span>Delete</button>
+                        <button class="delete-btn" onclick="deleteUser(${user.id})"><span class="icon">🗑️</span>Delete</button>
                     </td>
                 `;
-                row.querySelector(".delete-btn").addEventListener("click", () => {
-                    if (confirm(`Are you sure you want to delete ${user.username}?`)) {
-                        const index = users.findIndex(u => u.id === user.id);
-                        if (index !== -1) users.splice(index, 1);
-                        updateTable();
-                    }
-                });
                 usersTableBody.appendChild(row);
             });
             console.log("User table populated."); // Debug log
         }
-    }
+    };
 
-    function updatePagination(filteredUsers) {
+    const updatePagination = (filteredUsers) => {
         paginationContainer.innerHTML = "";
         const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
         for (let i = 1; i <= totalPages; i++) {
@@ -62,13 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
             button.classList.toggle("active", i === currentPage);
             button.addEventListener("click", () => {
                 currentPage = i;
-                updateTable();
+                updateTable(filteredUsers);
             });
             paginationContainer.appendChild(button);
         }
-    }
+    };
 
-    function updateTable() {
+    const updateTable = (users) => {
         const searchTerm = searchInput.value.toLowerCase();
         const filteredUsers = users.filter(user =>
             user.username.toLowerCase().includes(searchTerm) ||
@@ -76,8 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         populateTable(filteredUsers);
         updatePagination(filteredUsers);
-    }
+    };
 
-    searchInput.addEventListener("input", updateTable);
-    updateTable();
+    searchInput.addEventListener("input", () => fetchUsers());
+    fetchUsers();
 });
+
+async function deleteUser(id) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (response.ok) {
+                location.reload();
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    }
+}

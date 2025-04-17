@@ -6,8 +6,8 @@ async function setupDatabase() {
         // Update the username and password to match your MySQL credentials
         connection = await mysql.createConnection({
             host: 'localhost',
-            user: 'root', // Replace with your MySQL username
-            password: '4444' // Replace with your MySQL password
+            user: 'root',  // MySQL username (default is root)
+            password: '4444' //  MySQL password
         });
 
         console.log('Connected to MySQL server.');

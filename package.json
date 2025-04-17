@@ -1,14 +1,16 @@
 {
   "dependencies": {
-    "mysql2": "^3.14.0",
-    "zxcvbn": "^4.4.2",
-    "express": "^4.18.2",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.0.3"
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.21.2",
+    "mysql2": "^3.14.0",
+    "nodemailer": "^6.10.1",
+    "zxcvbn": "^4.4.2"
   },
   "scripts": {
     "start": "node server/server.js",
-    "setup-db": "node scripts/setup-db.js"
+    "setup-db": "node scripts/setup-db.js",
+    "update-db": "node scripts/update-db.js"
   }
 }
-
