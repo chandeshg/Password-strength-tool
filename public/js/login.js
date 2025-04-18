@@ -9,13 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
-        const errorMessage = document.querySelector('.error-message') || createErrorElement();
-
-        // Reset any existing error messages
-        errorMessage.textContent = '';
-        errorMessage.style.display = 'none';
-
+        const errorMessage = document.querySelector('.error-message');
+        
         try {
+            // Check for admin login
+            if (username === 'admin' && password === 'SecureAdmin123!') {
+                localStorage.setItem('adminToken', 'admin-session');
+                window.location.href = 'admin.html';
+                return;
+            }
+
             const response = await fetch('http://localhost:3000/api/login', {
                 method: 'POST',
                 headers: {
@@ -27,21 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (response.ok) {
-                // Store user data in localStorage
-                localStorage.setItem('userId', data.userId);
+                // Store auth data
+                localStorage.setItem('userToken', data.userId);
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('isLoggedIn', 'true');
                 
-                // Redirect to tools page
+                // Redirect to tool page
                 window.location.href = 'password-tool.html';
             } else {
-                // Show error message
-                errorMessage.textContent = data.message || 'Login failed';
+                errorMessage.textContent = data.message;
                 errorMessage.style.display = 'block';
             }
         } catch (error) {
             console.error('Login error:', error);
-            errorMessage.textContent = 'Server connection error';
+            errorMessage.textContent = 'An error occurred during login';
             errorMessage.style.display = 'block';
         }
     });

@@ -12,7 +12,7 @@ async function updateDatabase() {
 
         console.log('Connected to database');
 
-        // Check if columns already exist
+        // Check if columns exist
         const [columns] = await connection.execute(`
             SELECT COLUMN_NAME 
             FROM INFORMATION_SCHEMA.COLUMNS 
@@ -22,27 +22,28 @@ async function updateDatabase() {
 
         const columnNames = columns.map(col => col.COLUMN_NAME);
 
-        if (!columnNames.includes('verification_token')) {
+        // Add reset_token if it doesn't exist
+        if (!columnNames.includes('reset_token')) {
             await connection.execute(`
                 ALTER TABLE users 
-                ADD COLUMN verification_token VARCHAR(64)
+                ADD COLUMN reset_token VARCHAR(64)
             `);
-            console.log('Added verification_token column');
+            console.log('Added reset_token column');
         }
 
-        if (!columnNames.includes('is_verified')) {
+        // Add reset_expires if it doesn't exist
+        if (!columnNames.includes('reset_expires')) {
             await connection.execute(`
                 ALTER TABLE users 
-                ADD COLUMN is_verified BOOLEAN DEFAULT false
+                ADD COLUMN reset_expires DATETIME
             `);
-            console.log('Added is_verified column');
+            console.log('Added reset_expires column');
         }
 
         console.log('Database update completed successfully!');
 
     } catch (error) {
         console.error('Error updating database:', error);
-        process.exit(1);
     } finally {
         if (connection) {
             await connection.end();

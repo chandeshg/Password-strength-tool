@@ -69,6 +69,17 @@ header nav ul li a.login-btn:hover {
     background: rgba(255, 255, 255, 0.9);
 }
 
+header nav ul li a.admin-link {
+    opacity: 0.6;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+header nav ul li a.admin-link:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
 .hero {
     position: relative;
     min-height: 80vh;

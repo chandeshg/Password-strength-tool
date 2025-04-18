@@ -1,94 +1,100 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log("Admin page script loaded."); // Debug log
+document.addEventListener('DOMContentLoaded', () => {
+    // Check admin authentication
+    if (!localStorage.getItem('adminToken')) {
+        window.location.href = 'admin-login.html';
+        return;
+    }
+
     const usersTableBody = document.querySelector("#users-table tbody");
-    const noDataMessage = document.getElementById("no-data-message");
     const searchInput = document.getElementById("search");
-    const paginationContainer = document.createElement("div");
-    paginationContainer.classList.add("pagination");
-    document.querySelector(".container").appendChild(paginationContainer);
 
-    const rowsPerPage = 3;
-    let currentPage = 1;
+    let allUsers = []; // Store all users for filtering
 
-    const fetchUsers = async () => {
+    async function fetchUsers() {
         try {
-            const response = await fetch('http://localhost:3000/api/users');
-            const users = await response.json();
-            updateTable(users);
+            const response = await fetch('http://localhost:3000/api/admin/users');
+            allUsers = await response.json(); // Store users globally
+            displayUsers(allUsers);
         } catch (error) {
             console.error('Error fetching users:', error);
+            alert('Error loading users');
         }
-    };
+    }
 
-    const populateTable = (filteredUsers) => {
-        usersTableBody.innerHTML = "";
-        if (filteredUsers.length === 0) {
-            noDataMessage.style.display = "block";
-            console.log("No users found."); // Debug log
-        } else {
-            noDataMessage.style.display = "none";
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            const paginatedUsers = filteredUsers.slice(start, end);
+    function displayUsers(users) {
+        usersTableBody.innerHTML = '';
+        if (users.length === 0) {
+            usersTableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center;">No users found</td>
+                </tr>`;
+            return;
+        }
 
-            paginatedUsers.forEach(user => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
+        users.forEach(user => {
+            const row = `
+                <tr>
                     <td>${user.id}</td>
                     <td>${user.username}</td>
                     <td>${user.email}</td>
-                    <td>
-                        <button class="edit-btn"><span class="icon">✏️</span>Edit</button>
-                        <button class="delete-btn" onclick="deleteUser(${user.id})"><span class="icon">🗑️</span>Delete</button>
+                    <td>${user.is_verified ? 
+                        '<span class="status-verified">Verified</span>' : 
+                        '<span class="status-unverified">Unverified</span>'}
                     </td>
-                `;
-                usersTableBody.appendChild(row);
-            });
-            console.log("User table populated."); // Debug log
-        }
-    };
+                    <td>
+                        <button onclick="deleteUser(${user.id})" class="delete-btn">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>`;
+            usersTableBody.innerHTML += row;
+        });
+    }
 
-    const updatePagination = (filteredUsers) => {
-        paginationContainer.innerHTML = "";
-        const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
-        for (let i = 1; i <= totalPages; i++) {
-            const button = document.createElement("button");
-            button.textContent = i;
-            button.classList.toggle("active", i === currentPage);
-            button.addEventListener("click", () => {
-                currentPage = i;
-                updateTable(filteredUsers);
-            });
-            paginationContainer.appendChild(button);
+    function searchUsers(searchTerm) {
+        if (!searchTerm) {
+            displayUsers(allUsers);
+            return;
         }
-    };
 
-    const updateTable = (users) => {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filteredUsers = users.filter(user =>
-            user.username.toLowerCase().includes(searchTerm) ||
-            user.email.toLowerCase().includes(searchTerm)
+        const filteredUsers = allUsers.filter(user => 
+            user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        populateTable(filteredUsers);
-        updatePagination(filteredUsers);
-    };
+        
+        displayUsers(filteredUsers);
+    }
 
-    searchInput.addEventListener("input", () => fetchUsers());
+    // Update search input listener
+    searchInput.addEventListener('input', (e) => {
+        searchUsers(e.target.value);
+    });
+
+    // Initial load
     fetchUsers();
 });
 
 async function deleteUser(id) {
     if (confirm('Are you sure you want to delete this user?')) {
         try {
-            const response = await fetch(`http://localhost:3000/api/users/${id}`, {
+            const response = await fetch(`http://localhost:3000/api/admin/users/${id}`, {
                 method: 'DELETE'
             });
             
             if (response.ok) {
                 location.reload();
+            } else {
+                alert('Error deleting user');
             }
         } catch (error) {
-            console.error('Error deleting user:', error);
+            console.error('Error:', error);
+            alert('Error deleting user');
         }
     }
+}
+
+// Add logout function
+function logout() {
+    localStorage.removeItem('adminToken');
+    window.location.href = 'admin-login.html';
 }

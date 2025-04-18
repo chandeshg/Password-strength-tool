@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecurePass Admin Dashboard</title>
+    <title>Admin Dashboard - SecurePass</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">SecurePass</div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="admin.html">Dashboard</a></li>
-                <li><a href="index.html" class="logout-btn">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
     <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <a href="#" onclick="logout()" class="logout-btn">Logout</a>
+        </div>
         <div class="content">
             <h2>Manage Users</h2>
             <div class="search-bar">
-                <input type="text" id="search" placeholder="Search users by name or email">
+                <input type="text" id="search" placeholder="Search users...">
             </div>
             <table id="users-table">
                 <thead>
@@ -30,24 +25,14 @@
                         <th>ID</th>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                  
-                </tbody>
+                <tbody></tbody>
             </table>
-            <p id="no-data-message" class="no-data-message">No users found.</p>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 SecurePass. All rights reserved.</p>
-        <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Contact Us</a></li>
-        </ul>
-    </footer>
     <script src="./js/admin.js"></script>
 </body>
 </html>
