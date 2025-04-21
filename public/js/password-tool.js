@@ -133,6 +133,91 @@ window.checkEmail = checkEmail;
 window.checkPasswordStrength = checkPasswordStrength;
 window.checkPasswordHistory = checkPasswordHistory;
 
+async function checkPasswordBreach() {
+    const password = document.getElementById('breach-password').value;
+    const resultElement = document.getElementById('breach-check-result');
+
+    if (!password) {
+        resultElement.innerHTML = '<div class="alert alert-warning">Please enter a password to check</div>';
+        return;
+    }
+
+    try {
+        const hashBuffer = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(password));
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+        const prefix = hashHex.substring(0, 5);
+        const suffix = hashHex.substring(5);
+
+        const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+        const text = await response.text();
+        const breachDetails = text.split('\n')
+            .map(line => line.split(':'))
+            .find(([hash]) => hash === suffix);
+
+        if (breachDetails) {
+            const count = parseInt(breachDetails[1]);
+            const breachTypes = await getBreachTypes(count);
+            
+            resultElement.innerHTML = `
+                <div class="breach-alert">
+                    <h3>🚨 Password Breach Alert!</h3>
+                    <div class="breach-count">
+                        Found in ${count.toLocaleString()} data breaches
+                    </div>
+                    <div class="breach-details">
+                        <h4>Common Breach Types:</h4>
+                        <ul>
+                            ${breachTypes.map(type => `
+                                <li>
+                                    <span class="breach-type">${type.name}</span>
+                                    <span class="breach-desc">${type.description}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="recommendation">
+                            <strong>Recommendation:</strong> 
+                            This password has been severely compromised. 
+                            Please change it immediately and avoid using it anywhere else.
+                        </div>
+                    </div>
+                </div>`;
+        } else {
+            resultElement.innerHTML = `
+                <div class="safe-alert">
+                    <h3>✅ Password is Safe!</h3>
+                    <p>This password hasn't been found in any known data breaches.</p>
+                </div>`;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        resultElement.innerHTML = '<div class="alert alert-error">Error checking password breach status.</div>';
+    }
+}
+
+function getBreachTypes(count) {
+    // Common breach types based on count
+    if (count > 1000000) {
+        return [
+            { name: "Major Data Breaches", description: "Found in large-scale corporate data breaches" },
+            { name: "Password Dumps", description: "Part of published password collections" },
+            { name: "Dark Web", description: "Circulating on dark web markets" }
+        ];
+    } else if (count > 10000) {
+        return [
+            { name: "Medium-Scale Breaches", description: "Found in medium-sized website breaches" },
+            { name: "Credential Stuffing", description: "Used in automated attack attempts" }
+        ];
+    } else {
+        return [
+            { name: "Minor Breaches", description: "Found in smaller website compromises" }
+        ];
+    }
+}
+
+// Add to window object
+window.checkPasswordBreach = checkPasswordBreach;
+
 function logout() {
     // Clear user data from localStorage
     localStorage.removeItem('userToken');
@@ -224,3 +309,19 @@ function showBreachDetails(breaches) {
 
 // Add event listener for the generate button
 document.querySelector('.primary-btn').addEventListener('click', generatePassword);
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.nextElementSibling.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+// Make function globally available
+window.togglePassword = togglePassword;
