@@ -63,42 +63,78 @@ header nav ul li a:hover {
     color: #fff;
 }
 
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    display: flex;
+    gap: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.nav-links {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.nav-link {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
 main {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 100px; /* Adjust for fixed header */
+    padding-top: 60px; /* Adjust for fixed header */
 }
 
 .split-layout {
-    width: 90%;
-    max-width: 400px;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+    background: white;
     border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    box-sizing: border-box;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .form-container {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
+    color: #2c3e50;
+    padding: 30px;
 }
 
-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+.form-container h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
 }
 
 .input-group {
     width: 100%;
     position: relative;
     margin-bottom: 15px;
+}
+
+.input-group input {
+    color: #2c3e50;
+    background: white;
 }
 
 .input-icon {
@@ -163,13 +199,11 @@ form button:hover {
 }
 
 .error-message {
-    color: #ff4757;
-    background-color: rgba(255, 71, 87, 0.1);
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 15px;
-    font-size: 0.9rem;
-    display: none;
 }
 
 .error-message:not(:empty) {
@@ -195,6 +229,44 @@ form input.error {
 .admin-link a:hover {
     text-decoration: underline;
     opacity: 1;
+}
+
+.forgot-password {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.forgot-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.forgot-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.reset-message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.reset-message.success {
+    background: rgba(46, 213, 115, 0.2);
+    color: #2ed573;
+}
+
+.reset-message.error {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff4757;
 }
 
 /* Responsive Design */
