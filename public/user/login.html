@@ -3,50 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SecurePass</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/login.css">
+    <title>Password Tools - SecurePass</title>
+    <link rel="stylesheet" href="/css/password-tool.css">
+    <link rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/js/password-tool.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
 </head>
 <body>
-    <header>
-        <a href="index.html" class="logo">SecurePass</a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="password-tool.html">Tools</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="signup.html">Sign Up</a></li>
-            </ul>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>Password Strength Tool</span>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#" onclick="handleLogout()" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
         </nav>
     </header>
     <main>
-        <div class="split-layout">
-            <div class="left-section">
-                <h1>Welcome Back!</h1>
-                <p>Log in to access your account and manage your passwords securely.</p>
+        <div class="container">
+            <div class="welcome-message">
+                <h2>Welcome, <span id="username-display">User</span>! 👋</h2>
+                <p>Secure your digital presence with our password tools</p>
             </div>
-            <div class="right-section">
-                <div class="form-container">
-                    <h2><i class="fas fa-lock"></i> Login</h2>
-                    <form id="login-form" novalidate>
-                        <div class="input-group">
-                            <i class="fas fa-user input-icon"></i>
-                            <input type="text" id="username" placeholder="Username" required>
+            <div class="tools-grid">
+                <section class="tool-section">
+                    <h2><i class="fas fa-key"></i> Password Generator</h2>
+                    <div class="tool-content">
+                        <button class="primary-btn" onclick="generatePassword()">
+                            <i class="fas fa-cog"></i> Generate Secure Password
+                        </button>
+                        <div class="password-output">
+                            <div id="generated-password" class="output-box"></div>
+                            <button class="copy-btn" onclick="copyPassword()">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
                         </div>
+                    </div>
+                </section>
+
+                <section class="tool-section">
+                    <h2><i class="fas fa-lock"></i> Password Strength</h2>
+                    <div class="tool-content">
                         <div class="input-group">
                             <i class="fas fa-key input-icon"></i>
-                            <input type="password" id="password" placeholder="Password" required>
+                            <input type="password" id="password" placeholder="Type or paste your password">
+                            <button class="toggle-password" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
-                        <button type="submit">Login <i class="fas fa-arrow-right"></i></button>
-                    </form>
-                    <p class="forgot-password"><a href="forgot-password.html">Forgot Password?</a></p>
-                    <p class="signup-link">Don't have an account? <a href="signup.html">Sign up</a></p>
-                </div>
+                        <button class="primary-btn" onclick="checkPasswordStrength()">
+                            <i class="fas fa-chart-bar"></i> Analyze Strength
+                        </button>
+                        <div id="password-strength-result" class="output-box"></div>
+                    </div>
+                </section>
             </div>
         </div>
     </main>
-    <script src="./js/login.js"></script>
-    <script src="./js/admin-access.js"></script>
 </body>
 </html>

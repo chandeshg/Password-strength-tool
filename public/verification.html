@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Account - SecurePass</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                SecurePass
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/login.html" class="nav-link">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="login-container">
+        <div class="login-card verification-card">
+            <div class="login-header">
+                <i class="fas fa-envelope-open-text"></i>
+                <h1>Verify Your Email</h1>
+                <p>We've sent a verification code to your email</p>
+            </div>
+            <form id="verify-form">
+                <div class="input-group code-group">
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="text" id="verification-code" placeholder="Enter verification code" maxlength="6" required>
+                </div>
+                <div class="error-message"></div>
+                <button type="submit" class="login-btn">
+                    <span>Verify Account</span>
+                    <i class="fas fa-check"></i>
+                </button>
+            </form>
+            <div class="form-footer">
+                <p class="resend-text">Didn't receive the code? <a href="#" id="resend-code">Resend</a></p>
+                <p class="back-to-login">Go back to <a href="/login.html">Login</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="/js/verification.js"></script>
+</body>
+</html>

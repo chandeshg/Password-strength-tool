@@ -1,20 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get('email');
+    const verifyForm = document.getElementById('verify-form');
+    const resendBtn = document.getElementById('resend-code');
+    const errorMessage = document.querySelector('.error-message');
     
+    const email = new URLSearchParams(window.location.search).get('email');
     if (!email) {
-        window.location.href = 'signup.html';
+        showError('Email not found in URL');
         return;
     }
 
-    document.getElementById('verify-form').addEventListener('submit', async (e) => {
+    verifyForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const code = document.getElementById('verification-code').value.trim();
-        const errorMessage = document.querySelector('.error-message');
-        
+        const code = document.getElementById('verification-code').value;
+        handleVerification(code);
+    });
+
+    async function handleVerification(code) {
         try {
-            const response = await fetch('http://localhost:3000/api/verify', {
+            const response = await fetch('/api/verify', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,16 +28,54 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             
             if (response.ok) {
-                alert('Account verified successfully! Please login.');
-                window.location.href = 'login.html';
+                showSuccess('Account verified successfully! Redirecting to login...');
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2000);
             } else {
-                errorMessage.textContent = data.message;
-                errorMessage.style.display = 'block';
+                showError(data.message || 'Verification failed');
             }
         } catch (error) {
-            console.error('Verification error:', error);
-            errorMessage.textContent = 'An error occurred during verification';
-            errorMessage.style.display = 'block';
+            showError('Error during verification');
+        }
+    }
+
+    resendBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    username: localStorage.getItem('pendingUsername'),
+                    password: localStorage.getItem('pendingPassword'),
+                    resending: true
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                showSuccess('New verification code sent!');
+            } else {
+                showError(data.message || 'Failed to resend code');
+            }
+        } catch (error) {
+            showError('Error resending verification code');
         }
     });
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        errorMessage.className = 'error-message error';
+    }
+
+    function showSuccess(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        errorMessage.className = 'error-message success';
+    }
 });
