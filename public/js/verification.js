@@ -9,12 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    verifyForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const code = document.getElementById('verification-code').value;
-        handleVerification(code);
-    });
-
     async function handleVerification(code) {
         try {
             const response = await fetch('/api/verify', {
@@ -24,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ email, code })
             });
-            
+
             const data = await response.json();
             
             if (response.ok) {
@@ -40,29 +34,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    if (verifyForm) {
+        verifyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const code = document.getElementById('verification-code').value;
+            await handleVerification(code);
+        });
+    }
+
     resendBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/signup', {
+            const storedEmail = new URLSearchParams(window.location.search).get('email');
+            const storedUsername = localStorage.getItem('pendingUsername');
+            const storedPassword = localStorage.getItem('pendingPassword');
+
+            if (!storedEmail || !storedUsername || !storedPassword) {
+                showError('Missing registration information. Please sign up again.');
+                setTimeout(() => {
+                    window.location.href = '/signup.html';
+                }, 2000);
+                return;
+            }
+
+            const response = await fetch('/api/resend-verification', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email,
-                    username: localStorage.getItem('pendingUsername'),
-                    password: localStorage.getItem('pendingPassword'),
-                    resending: true
+                    email: storedEmail,
+                    username: storedUsername,
+                    password: storedPassword
                 })
             });
 
             const data = await response.json();
             if (response.ok) {
-                showSuccess('New verification code sent!');
+                showSuccess('Verification code resent. Please check your email.');
             } else {
                 showError(data.message || 'Failed to resend code');
             }
         } catch (error) {
+            console.error('Resend error:', error);
             showError('Error resending verification code');
         }
     });

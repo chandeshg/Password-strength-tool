@@ -1,10 +1,7 @@
+require('dotenv').config();
 const express = require('express');
-const bcrypt = require('bcrypt');
 const cors = require('cors');
-const pool = require('./db');
-const path = require('path');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+const { transporter, verifyConnection } = require('../config/emailConfig');
 
 const app = express();
 
@@ -13,82 +10,46 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Email configuration with better error handling
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'chandeshgunawardena@gmail.com',
-        pass: 'madw qppg jukn haxc'
-    }
-});
+// Email verification check
+verifyConnection().catch(console.error);
 
-// Test email configuration
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('Email setup error:', error);
-    } else {
-        console.log('Email server is ready to send messages');
-    }
-});
-
-// Modified signup endpoint with better error handling
-app.post('/api/signup', async (req, res) => {
+// Update signup endpoint
+app.post('/api/signup', express.json(), async (req, res) => {
     try {
         const { username, email, password } = req.body;
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // Check for existing user first
-        const [existingUsers] = await pool.execute(
-            'SELECT * FROM users WHERE username = ? OR email = ?',
-            [username, email]
-        );
-
-        if (existingUsers.length > 0) {
-            const isDuplicateUsername = existingUsers.some(user => user.username === username);
-            const isDuplicateEmail = existingUsers.some(user => user.email === email);
-
-            let message = '';
-            if (isDuplicateUsername && isDuplicateEmail) {
-                message = 'Both username and email are already taken';
-            } else if (isDuplicateUsername) {
-                message = 'Username is already taken';
-            } else {
-                message = 'Email is already taken';
-            }
-
-            return res.status(400).json({ message });
-        }
-
-        // If no duplicates, proceed with user creation
-        const verificationCode = Math.floor(100000 + Math.random() * 900000);
-        const hashedPassword = await bcrypt.hash(password, 10);
-
+        // Insert user with verification code
         await pool.execute(
             'INSERT INTO users (username, email, password, verification_token, is_verified) VALUES (?, ?, ?, ?, false)',
-            [username, email, hashedPassword, verificationCode]
+            [username, email, password, verificationCode]
         );
 
         // Send verification email
-        await transporter.sendMail({
-            from: 'chandeshgunawardena@gmail.com',
+        const mailOptions = {
+            from: `"SecurePass" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: 'Verify your SecurePass account',
+            subject: 'Verify Your SecurePass Account',
             html: `
                 <h1>Welcome to SecurePass!</h1>
                 <p>Your verification code is: <strong>${verificationCode}</strong></p>
                 <p>Enter this code to complete your registration.</p>
             `
-        });
+        };
 
-        res.status(201).json({ 
+        await transporter.sendMail(mailOptions);
+        console.log('Verification email sent to:', email);
+
+        res.status(201).json({
+            success: true,
             message: 'Please check your email for verification code',
             email: email
         });
-
     } catch (error) {
         console.error('Signup error:', error);
-        res.status(500).json({ 
-            message: 'Error during signup',
-            details: error.message 
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Server error during signup'
         });
     }
 });
@@ -120,62 +81,91 @@ app.post('/api/verify', async (req, res) => {
 });
 
 // Login endpoint
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', express.json(), async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
         const [users] = await pool.execute(
-            'SELECT * FROM users WHERE username = ?',
-            [username]
+            'SELECT * FROM users WHERE email = ? LIMIT 1',
+            [email]
         );
 
         if (users.length === 0) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid credentials'
+            });
         }
 
         const user = users[0];
 
         if (!user.is_verified) {
-            return res.status(401).json({ message: 'Please verify your email first' });
+            return res.status(401).json({
+                success: false,
+                message: 'Please verify your email first'
+            });
         }
 
-        const validPassword = await bcrypt.compare(password, user.password);
-
-        if (!validPassword) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+        if (user.password === password) {
+            req.session.user = {
+                id: user.id,
+                email: user.email,
+                username: user.username
+            };
+            
+            return res.json({
+                success: true,
+                redirect: '/user/login.html'  // Redirect to password tool
+            });
         }
 
-        res.json({ 
-            message: 'Login successful',
-            userId: user.id,
-            username: user.username,
-            userEmail: user.email // Add email to response
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid credentials'
         });
+
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
     }
 });
 
-// Admin credentials (in production, these should be in environment variables)
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'SecureAdmin123!';
-
 // Admin login endpoint
-app.post('/api/admin/login', async (req, res) => {
+app.post('/api/admin/login', express.json(), (req, res) => {
     try {
+        console.log('Admin login attempt:', req.body);
         const { username, password } = req.body;
-        
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            res.json({ 
+
+        // Admin credentials check (in production, use environment variables)
+        const ADMIN_USER = 'admin';
+        const ADMIN_PASS = 'admin123';
+
+        if (username === ADMIN_USER && password === ADMIN_PASS) {
+            // Set admin session
+            req.session.admin = true;
+            req.session.username = username;
+
+            return res.json({
+                success: true,
                 message: 'Admin login successful',
-                token: 'admin-token'  // In production, use proper JWT
+                redirect: '/admin/dashboard'
             });
-        } else {
-            res.status(401).json({ message: 'Invalid admin credentials' });
         }
+
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid admin credentials'
+        });
+
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        console.error('Admin login error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
     }
 });
 
