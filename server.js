@@ -69,20 +69,13 @@ app.post('/api/signup', async (req, res) => {
         const { username, email, password } = req.body;
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // Check existing user
+        // Check existing user in database
         const [existingUsers] = await pool.query(
             'SELECT * FROM users WHERE email = ? OR username = ?',
             [email, username]
         );
 
-        if (existingUsers.length > 0) {
-            return res.status(400).json({
-                success: false,
-                message: 'Username or email already exists'
-            });
-        }
-
-        // Insert user
+        // Insert new user into database
         await pool.query(
             'INSERT INTO users (username, email, password, verification_token, is_verified) VALUES (?, ?, ?, ?, false)',
             [username, email, password, verificationCode]
