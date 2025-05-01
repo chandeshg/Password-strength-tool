@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <title>Admin Dashboard - SecurePass</title>
+    <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -12,18 +12,18 @@
         <nav class="sidebar">
             <div class="sidebar-header">
                 <i class="fas fa-shield-alt"></i>
-                <h2>Admin Panel</h2>
+                <h2>SecurePass</h2>
             </div>
-            <div class="nav-links">
-                <a href="/admin/dashboard" class="nav-item active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+            <div class="nav-menu">
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
                 </a>
-                <a href="/admin/settings" class="nav-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                <a href="/password-tool" class="menu-item">
+                    <i class="fas fa-tools"></i>
+                    <span>Password Tools</span>
                 </a>
-                <a href="#" class="nav-item logout">
+                <a href="#" onclick="handleLogout()" class="menu-item logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
@@ -31,12 +31,16 @@
         </nav>
 
         <main class="main-content">
-            <div class="top-bar">
-                <div class="search-container">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search users..." id="searchInput">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1>User Management</h1>
+                    <p class="subtitle">Manage and monitor user accounts</p>
                 </div>
-            </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search users...">
+                </div>
+            </header>
 
             <div class="stats-grid">
                 <div class="stat-card">
@@ -44,56 +48,85 @@
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>Total Users</h3>
-                        <p id="totalUsers">0</p>
+                        <label>Total Users</label>
+                        <h3 id="totalUsers">0</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-shield-alt"></i>
+                    <div class="stat-icon verified">
+                        <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>Protected Passwords</h3>
-                        <p id="strongPasswords">0</p>
+                        <label>Verified Users</label>
+                        <h3 id="verifiedUsers">0</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>At Risk</h3>
-                        <p id="weakPasswords">0</p>
+                        <label>Pending Users</label>
+                        <h3 id="pendingUsers">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon online">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <label>Active Users</label>
+                        <h3 id="activeUsers">0</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="table-section">
-                <div class="table-header">
-                    <h2>User Management</h2>
-                    <button class="add-user-btn">
-                        <i class="fas fa-plus"></i> Add User
-                    </button>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Users List</h2>
                 </div>
-                <div class="table-container">
+                <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Status</th>
-                                <th>Last Updated</th>
+                                <th>Join Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <!-- User data will be populated here -->
+                            <!-- Users will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Active Sessions</h2>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Login Time</th>
+                                <th>Last Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessionsTableBody">
+                            <!-- Active sessions will be populated here -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </main>
     </div>
-    <script src="/js/admin-dashboard.js"></script>
+
+    <div id="toast" class="toast"></div>
+    <script src="/js/admin.js"></script>
 </body>
 </html>

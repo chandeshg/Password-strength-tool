@@ -1,46 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    const errorMessage = document.querySelector('.error-message');
+    const loginForm = document.querySelector('.login-form');
+    const errorDiv = document.querySelector('.error-message');
+    const submitBtn = loginForm?.querySelector('button[type="submit"]');
+    
+    if (!loginForm) {
+        console.error('Login form not found');
+        return;
+    }
 
-    if (!loginForm) return;
+    function showError(message) {
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    }
 
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+        const email = document.getElementById('email')?.value;
+        const password = document.getElementById('password')?.value;
+
+        if (!email || !password) {
+            showError('Please fill in all fields');
+            return;
+        }
+
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                credentials: 'same-origin',
-                body: JSON.stringify({ 
-                    email: document.getElementById('email').value.trim(),
-                    password: document.getElementById('password').value.trim()
-                })
+                credentials: 'include',
+                body: JSON.stringify({ email, password })
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
             const data = await response.json();
-            if (data.success) {
+            
+            if (response.ok) {
                 window.location.href = data.redirect;
+            } else if (data.needsVerification) {
+                window.location.href = `/verification.html?email=${encodeURIComponent(email)}`;
             } else {
-                showError(data.message);
+                showError(data.message || 'Login failed');
             }
         } catch (error) {
             console.error('Login error:', error);
             showError('Connection error. Please try again.');
         }
     });
-
-    // Add password toggle function
-    window.togglePassword = function(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = input.nextElementSibling.querySelector('i');
-        input.type = input.type === 'password' ? 'text' : 'password';
-        icon.className = `fas fa-eye${input.type === 'password' ? '' : '-slash'}`;
-    };
 });

@@ -1,0 +1,21 @@
+.login-header i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-btn {
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+}
+
+.error-message {
+    display: none;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #dc2626;
+    text-align: center;
+}

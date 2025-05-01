@@ -1,0 +1,231 @@
+:root {
+    --primary: #4776E6;
+    --secondary: #8E54E9;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --dark: #1F2937;
+    --light: #F3F4F6;
+    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.admin-container {
+    display: flex;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    background: var(--dark);
+    min-height: 100vh;
+    padding: 2rem;
+    position: fixed;
+    color: white;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 2rem;
+}
+
+.sidebar-header i {
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover, .menu-item.active {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.menu-item.logout {
+    margin-top: auto;
+    color: var(--danger);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 2rem;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-left h1 {
+    font-size: 1.875rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #6B7280;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-icon.verified { background: var(--success); }
+.stat-icon.pending { background: var(--warning); }
+
+.stat-info label {
+    color: #6B7280;
+    font-size: 0.875rem;
+}
+
+.stat-info h3 {
+    font-size: 1.5rem;
+    color: var(--dark);
+    margin-top: 0.25rem;
+}
+
+/* Table Styles */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.card-header h2 {
+    font-size: 1.25rem;
+    color: var(--dark);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #F9FAFB;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #E5E7EB;
+    color: #4B5563;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-badge.verified {
+    background: #D1FAE5;
+    color: var(--success);
+}
+
+.status-badge.pending {
+    background: #FEF3C7;
+    color: var(--warning);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: white;
+    background: var(--dark);
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

@@ -1,30 +1,48 @@
+const path = require('path');
 const nodemailer = require('nodemailer');
 
+console.log('Initializing email service...');
+
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
         user: 'chandeshgunawardena@gmail.com',
-        pass: 'ubpf oksm fcwa dsok'
-    },
-    tls: {
-        rejectUnauthorized: false
-    },
-    debug: true
+        pass: 'kyegmnolmxammvsm'
+    }
 });
 
-// Test email configuration
-async function verifyEmailConfig() {
+async function sendVerificationEmail(to, code) {
+    console.log('Processing verification email:', { to, code });
+
+    const mailOptions = {
+        from: '"SecurePass" <chandeshgunawardena@gmail.com>',
+        to: to,
+        subject: 'Your Verification Code',
+        html: `
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 5px;">
+                <h2>Your verification code is:</h2>
+                <div style="font-size: 36px; color: #4776E6; text-align: center; padding: 20px;">
+                    ${code}
+                </div>
+            </div>
+        `
+    };
+
     try {
-        await transporter.verify();
-        console.log('Email configuration is valid');
-        return true;
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Verification email sent successfully:', { messageId: info.messageId, to });
+        return info;
     } catch (error) {
-        console.error('Email configuration error:', error);
-        return false;
+        console.error('Failed to send verification email:', error);
+        throw error;
     }
 }
 
-module.exports = { transporter, verifyEmailConfig };
+// Just verify the connection
+transporter.verify()
+    .then(() => console.log('Email server is ready'))
+    .catch(err => console.error('Email server error:', err));
+
+module.exports = { transporter, sendVerificationEmail };
