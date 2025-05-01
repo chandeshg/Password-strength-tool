@@ -457,6 +457,123 @@ app.delete('/admin/users/:id', checkAuth, async (req, res) => {
     }
 });
 
+// Store reset tokens in memory (you may want to move this to database in production)
+const resetTokens = new Map();
+
+// Add forgot password endpoint
+app.post('/api/forgot-password', async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        // Check if user exists
+        const users = await executeQuery(
+            'SELECT * FROM users WHERE email = ?',
+            [email]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'No account found with this email' 
+            });
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const expiryTime = Date.now() + 3600000; // 1 hour expiry
+
+        // Store token with user info
+        resetTokens.set(resetToken, {
+            email,
+            expiry: expiryTime
+        });
+
+        // Send reset email
+        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+        const mailOptions = {
+            from: '"SecurePass" <chandeshgunawardena@gmail.com>',
+            to: email,
+            subject: 'Password Reset Request',
+            html: `
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 5px;">
+                    <h2>Password Reset Request</h2>
+                    <p>Click the button below to reset your password:</p>
+                    <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background: #4776E6; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
+                    <p style="margin-top: 20px;">This link will expire in 1 hour.</p>
+                </div>
+            `
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.json({ 
+            success: true, 
+            message: 'Password reset link sent to your email' 
+        });
+
+    } catch (error) {
+        console.error('Forgot password error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Failed to process reset request' 
+        });
+    }
+});
+
+// Add reset password endpoint
+app.post('/api/reset-password', async (req, res) => {
+    try {
+        const { token, newPassword } = req.body;
+        const tokenData = resetTokens.get(token);
+
+        if (!tokenData) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired reset token'
+            });
+        }
+
+        if (Date.now() > tokenData.expiry) {
+            resetTokens.delete(token);
+            return res.status(400).json({
+                success: false,
+                message: 'Reset token has expired'
+            });
+        }
+
+        // Update password
+        await executeQuery(
+            'UPDATE users SET password = ? WHERE email = ?',
+            [newPassword, tokenData.email]
+        );
+
+        // Clear used token
+        resetTokens.delete(token);
+
+        res.json({
+            success: true,
+            message: 'Password updated successfully'
+        });
+
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to reset password'
+        });
+    }
+});
+
+// Add route for reset password page
+app.get('/reset-password', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
+});
+
+// Add email checker route
+app.get('/email-checker', checkAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'email-checker.html'));
+});
+
 // Update server startup
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

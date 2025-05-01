@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Breach Checker - SecurePass</title>
+    <link rel="stylesheet" href="/css/email-checker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-left">
+                <a href="/" class="nav-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>SecurePass</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="/password-tool" class="nav-link">
+                    <i class="fas fa-tools"></i>
+                    <span>Password Tools</span>
+                </a>
+                <a href="#" onclick="handleLogout()" class="nav-link logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1><i class="fas fa-envelope-open-text"></i> Email Breach Checker</h1>
+        <p>Check if your email has been compromised in any known data breaches</p>
+    </div>
+
+    <main class="container">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="email" id="email-check" placeholder="Enter your email address">
+                <button onclick="checkEmailBreach()" class="search-button">
+                    <i class="fas fa-search"></i> Check Security
+                </button>
+            </div>
+        </div>
+
+        <div id="loading" class="loader" style="display: none;">
+            <div class="spinner"></div>
+            <p>Scanning databases...</p>
+        </div>
+
+        <div id="breach-result" class="result-container" style="display: none;"></div>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Check</h3>
+                <p>Your email is checked securely against known breaches</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Fast Results</h3>
+                <p>Get instant results from our comprehensive database</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-lock"></i>
+                <h3>Privacy First</h3>
+                <p>Your data is never stored or shared with third parties</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-shield-alt"></i> SecurePass</h3>
+                <p>Your trusted partner in password security</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> chandeshgunawardena@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +947773468164</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SecurePass. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/email-checker.js"></script>
+</body>
+</html>
