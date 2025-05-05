@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function generatePassword() {
-    const length = 12; // Fixed length
+    const length = 12; 
     const useLower = document.getElementById('include-lowercase').checked;
     const useUpper = document.getElementById('include-uppercase').checked;
     const useNumbers = document.getElementById('include-numbers').checked;

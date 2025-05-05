@@ -37,6 +37,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem 2rem;
+}
+
+.nav-brand {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,10 +60,20 @@ body {
     font-size: 1.5rem;
 }
 
-.nav-right {
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--dark);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.nav-menu {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .nav-link {
@@ -76,7 +89,6 @@ body {
 
 .nav-link:hover {
     background: var(--light);
-    transform: translateY(-1px);
 }
 
 .nav-link.logout {
@@ -397,6 +409,31 @@ body {
 
     .nav-content {
         padding: 1rem;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        padding: 1rem 0;
+        gap: 0.5rem;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-brand {
+        padding-bottom: 1rem;
     }
 
     .nav-link span {
