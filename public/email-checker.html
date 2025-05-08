@@ -4,76 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Breach Checker - SecurePass</title>
+    <link rel="stylesheet" href="/css/welcome.css">
     <link rel="stylesheet" href="/css/email-checker.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-content">
-            <div class="nav-brand">
-                <a href="/" class="nav-logo">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>SecurePass</span>
-                </a>
-                <button class="menu-toggle" onclick="toggleMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="/password-tool" class="nav-link">
-                    <i class="fas fa-tools"></i>
-                    <span>Password Tools</span>
-                </a>
-                <a href="#" onclick="handleLogout()" class="nav-link logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+    <header>
+        <div class="logo"><i class="fas fa-shield-alt"></i> SecurePass</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/login.html">Login</a></li>
+                <li><a href="/signup.html">Sign Up</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="hero">
-        <h1><i class="fas fa-envelope-open-text"></i> Email Breach Checker</h1>
-        <p>Check if your email has been compromised in any known data breaches</p>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1><i class="fas fa-shield-check"></i> Email Security Scanner</h1>
+            <p>Protect your digital identity by checking for data breaches</p>
+        </div>
     </div>
 
     <main class="container">
-        <div class="search-container">
-            <div class="search-box">
-                <input type="email" id="email-check" placeholder="Enter your email address">
-                <button onclick="checkEmailBreach()" class="search-button">
-                    <i class="fas fa-search"></i> Check Security
-                </button>
+        <div class="app-card">
+            <div class="card-header">
+                <div class="header-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <h2>Check Your Email Security</h2>
+                <p>Enter your email address to see if it has been compromised in known data breaches</p>
+            </div>
+            
+            <div class="card-body">
+                <form id="breach-check-form">
+                    <div class="input-group">
+                        <label for="email-input">Email Address</label>
+                        <div class="input-container">
+                            <i class="fas fa-envelope icon-left"></i>
+                            <input type="email" id="email-input" required placeholder="Enter your email address">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="check-btn" class="primary-button">
+                        <i class="fas fa-search"></i> Scan For Breaches
+                    </button>
+                </form>
+                
+                <div class="loading-container" id="loading">
+                    <div class="spinner"></div>
+                    <p>Scanning databases...</p>
+                </div>
+                
+                <div id="breach-result" class="result-container"></div>
             </div>
         </div>
-
-        <div id="loading" class="loader" style="display: none;">
-            <div class="spinner"></div>
-            <p>Scanning databases...</p>
-        </div>
-
-        <div id="breach-result" class="result-container" style="display: none;"></div>
-
-        <div class="features">
-            <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Secure Check</h3>
-                <p>Your email is checked securely against known breaches</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Fast Results</h3>
-                <p>Get instant results from our comprehensive database</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-lock"></i>
-                <h3>Privacy First</h3>
-                <p>Your data is never stored or shared with third parties</p>
+        
+        <div class="features-section">
+            <h3 class="section-title"><i class="fas fa-shield-alt"></i> How We Protect You</h3>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h4>Extensive Database</h4>
+                    <p>Check against billions of compromised accounts from hundreds of data breaches</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h4>Secure Scanning</h4>
+                    <p>Your data is transmitted securely and never stored after checking</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h4>Detailed Alerts</h4>
+                    <p>Get specific information about which breaches affected your accounts</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h4>Protection Tips</h4>
+                    <p>Receive actionable recommendations to secure your accounts</p>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="footer">
+    <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h3><i class="fas fa-shield-alt"></i> SecurePass</h3>
@@ -82,29 +110,229 @@
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
-                    <li><a href="/terms">Terms of Service</a></li>
+                    <li><a href="/about.html" class="footer-link">About Us</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="/terms.html" class="footer-link">Terms of Service</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Contact</h4>
                 <ul>
-                    <li><i class="fas fa-envelope"></i> chandeshgunawardena@gmail.com</li>
-                    <li><i class="fas fa-phone"></i> +947773468164</li>
+                    <li><a href="mailto:chandeshgunawardena@gmail.com"><i class="fas fa-envelope"></i> chandeshgunawardena@gmail.com</a></li>
+                    <li><a href="tel:+947773468164"><i class="fas fa-phone"></i> +94 777 346 8164</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 SecurePass. All rights reserved.</p>
+            <p>&copy; 2025 SecurePass. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="/js/email-checker.js"></script>
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('navMenu');
-            menu.classList.toggle('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch user info
+            fetch('/api/user', {
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.username) {
+                    // Update navigation for logged-in user
+                    updateForLoggedInUser(data);
+                    
+                    // Auto-fill email field if user is logged in
+                    if (data.email) {
+                        document.getElementById('email-input').value = data.email;
+                    }
+                }
+            })
+            .catch(console.error);
+            
+            // Set up form submission
+            document.getElementById('breach-check-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                checkEmailBreach();
+            });
+        });
+90  
+        function updateForLoggedInUser(userData) {
+            const navUl = document.querySelector('nav ul');
+            navUl.innerHTML = `
+                <li><a href="/">Home</a></li>
+                <li><a href="/password-tool">Password Tools</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        ${userData.username}
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <strong>${userData.username}</strong>
+                            <span>${userData.email || 'No email provided'}</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="handleLogout()" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </li>
+            `;
+
+            // Add dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            dropdownToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+        
+        function handleLogout() {
+            fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(() => {
+                window.location.href = '/login.html';
+            })
+            .catch(() => {
+                window.location.href = '/login.html';
+            });
+        }
+        
+        function checkEmailBreach() {
+            const email = document.getElementById('email-input').value.trim();
+            const resultDiv = document.getElementById('breach-result');
+            const loading = document.getElementById('loading');
+            
+            if (!email) {
+                showError('Please enter an email address');
+                return;
+            }
+            
+            // Show loading state
+            resultDiv.style.display = 'none';
+            loading.style.display = 'flex';
+            
+            // Make the API call to check the email
+            fetch('/api/check-email-breach', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                resultDiv.style.display = 'block';
+                
+                if (data.breached) {
+                    // Email found in breaches
+                    showBreachResult(email, data.breaches);
+                } else {
+                    // Email not found in breaches
+                    showSafeResult(email);
+                }
+            })
+            .catch(error => {
+                loading.style.display = 'none';
+                showError('Error checking email: ' + error.message);
+            });
+        }
+        
+        function showSafeResult(email) {
+            const resultDiv = document.getElementById('breach-result');
+            resultDiv.className = 'result-container safe-result';
+            resultDiv.innerHTML = `
+                <div class="result-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Good News!</h3>
+                <p class="result-message">${email} has not been found in any known data breaches.</p>
+                <div class="tips-section">
+                    <h4><i class="fas fa-lightbulb"></i> Security Tips:</h4>
+                    <ul>
+                        <li>Continue using strong, unique passwords for each account</li>
+                        <li>Enable two-factor authentication when possible</li>
+                        <li>Regularly monitor your accounts for suspicious activity</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        function showBreachResult(email, breaches) {
+            const resultDiv = document.getElementById('breach-result');
+            resultDiv.className = 'result-container breach-result';
+            
+            let breachesHTML = '';
+            if (breaches && breaches.length) {
+                breachesHTML = `
+                    <div class="breach-list">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Found in ${breaches.length} breach${breaches.length > 1 ? 'es' : ''}:</h4>
+                        <div class="breaches-grid">
+                            ${breaches.map(breach => `
+                                <div class="breach-item">
+                                    <div class="breach-header">
+                                        <h5>${breach.Name}</h5>
+                                        <span class="breach-date">${new Date(breach.BreachDate).toLocaleDateString()}</span>
+                                    </div>
+                                    <p>${breach.Description}</p>
+                                    <div class="breach-data">
+                                        <span class="data-label">Compromised data:</span>
+                                        <div class="data-types">
+                                            ${breach.DataClasses.map(type => 
+                                                `<span class="data-type">${type}</span>`
+                                            ).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Security Alert</h3>
+                <p class="result-message">${email} has been found in data breaches.</p>
+                
+                ${breachesHTML}
+                
+                <div class="action-section">
+                    <h4><i class="fas fa-shield-alt"></i> Recommended Actions:</h4>
+                    <ul class="action-list">
+                        <li><i class="fas fa-key"></i> Change your passwords immediately</li>
+                        <li><i class="fas fa-lock"></i> Enable two-factor authentication</li>
+                        <li><i class="fas fa-eye"></i> Monitor your accounts for suspicious activity</li>
+                        <li><i class="fas fa-sync-alt"></i> Use different passwords for different accounts</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        function showError(message) {
+            const resultDiv = document.getElementById('breach-result');
+            resultDiv.className = 'result-container error-result';
+            resultDiv.innerHTML = `
+                <div class="result-icon error">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h3>Error</h3>
+                <p class="result-message">${message}</p>
+            `;
+            resultDiv.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
         }
     </script>
 </body>

@@ -1,10 +1,81 @@
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/user', {
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.username) {
+            document.getElementById('nav-username').textContent = data.username;
+            document.getElementById('dropdown-username').textContent = data.username;
+            document.getElementById('dropdown-email').textContent = data.email;
+            
+            // Auto-fill email field if user is logged in
+            const emailInput = document.getElementById('email-input');
+            if (emailInput && data.email) {
+                emailInput.value = data.email;
+            }
+        }
+    })
+    .catch(console.error);
+});
+
+// Enhanced dropdown functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const profileBtn = document.querySelector('.profile-btn');
+    const profileDropdown = document.querySelector('.profile-dropdown');
+    const dropdown = document.querySelector('.dropdown-content');
+
+    // Toggle dropdown on button click
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('active');
+        dropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+            profileDropdown.classList.remove('active');
+            dropdown.classList.remove('show');
+        }
+    });
+    
+    // Add hover effect for dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(item => {
+        const icon = item.querySelector('i');
+        item.addEventListener('mouseenter', () => {
+            if (!item.classList.contains('text-danger')) {
+                icon.style.color = '#4776E6';
+            }
+        });
+        item.addEventListener('mouseleave', () => {
+            if (!item.classList.contains('text-danger')) {
+                icon.style.color = '';
+            }
+        });
+    });
+});
+
+// Fix the logout functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Add event listener to logout button
+    const logoutBtn = document.querySelector('[onclick="handleLogout()"]');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
+});
+
 async function checkEmailBreach() {
     const email = document.getElementById('email-check').value;
     const loading = document.getElementById('loading');
     const resultBox = document.getElementById('breach-result');
 
     if (!email) {
-        showResult('Please enter an email address', 'warning');
+        showError('Please enter an email address');
         return;
     }
 
@@ -12,9 +83,12 @@ async function checkEmailBreach() {
         loading.style.display = 'block';
         resultBox.style.display = 'none';
 
-        const response = await fetch(`https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(email)}`, {
+        // Comment: The API key should be provided by the server to avoid exposing it in client-side code
+        // For now, we'll handle the error case since the API call will likely fail
+        const response = await fetch(`/api/check-email-breach?email=${encodeURIComponent(email)}`, {
+            method: 'GET',
             headers: {
-                'hibp-api-key': 'your-api-key'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -23,12 +97,18 @@ async function checkEmailBreach() {
         if (response.status === 404) {
             showSafeResult(email);
         } else if (response.ok) {
-            const breaches = await response.json();
-            showBreachResult(email, breaches);
+            const data = await response.json();
+            if (data.breaches && data.breaches.length > 0) {
+                showBreachResult(email, data.breaches);
+            } else {
+                showSafeResult(email);
+            }
         } else {
-            showError('Error checking email. Please try again later.');
+            const data = await response.json();
+            showError(data.message || 'Error checking email. Please try again later.');
         }
     } catch (error) {
+        console.error('Email breach check error:', error);
         loading.style.display = 'none';
         showError('Service temporarily unavailable. Please try again later.');
     }
@@ -96,4 +176,48 @@ function showError(message) {
         <p>${message}</p>
     `;
     resultBox.style.display = 'block';
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function handleLogout() {
+    console.log('Logging out...');
+    fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include'
+    })
+    .then(response => {
+        console.log('Logout response:', response);
+        window.location.href = '/login.html';
+    })
+    .catch(error => {
+        console.error('Logout error:', error);
+        // Even if there's an error, redirect to login
+        window.location.href = '/login.html';
+    });
+}
+
+function confirmDeleteAccount() {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        fetch('/api/user/delete', {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Account deleted successfully');
+                window.location.href = '/welcome';
+            } else {
+                alert(data.message || 'Failed to delete account');
+            }
+        })
+        .catch(err => {
+            console.error('Delete error:', err);
+            alert('Error deleting account');
+        });
+    }
 }

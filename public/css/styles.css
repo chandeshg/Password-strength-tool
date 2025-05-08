@@ -12,3 +12,365 @@
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* Responsive styles for all screens */
+@media (max-width: 992px) {
+    .container {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    .tool-container {
+        display: block;
+    }
+    
+    .tool-section {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    
+    .dropdown-content {
+        right: 0;
+        width: 250px;
+    }
+}
+
+/* Tablet and small laptops */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+    
+    .navbar-links {
+        display: none;
+    }
+    
+    .profile-section {
+        margin-left: auto;
+    }
+    
+    .hero {
+        padding: 3rem 1rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .input-group input, 
+    .input-group button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .result-box {
+        padding: 15px;
+    }
+    
+    /* Global navigation responsive fixes */
+    .navbar {
+        padding: 0;
+    }
+    
+    .nav-content,
+    .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .navbar-brand,
+    .nav-left {
+        margin-bottom: 10px;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .navbar-links,
+    .nav-right {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .nav-link,
+    .navbar-link {
+        padding: 8px 10px;
+        margin: 0 5px;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 576px) {
+    .navbar-brand span {
+        display: none;
+    }
+    
+    .profile-btn {
+        padding: 6px;
+    }
+    
+    .profile-btn img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .tool-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .tool-header i {
+        font-size: 1.5rem;
+    }
+    
+    .password-options {
+        flex-direction: column;
+    }
+    
+    .option-group {
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .toggle-password {
+        right: 10px;
+    }
+    
+    #generated-password {
+        font-size: 16px;
+        word-break: break-all;
+    }
+    
+    .footer {
+        text-align: center;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+    }
+    
+    .footer-section {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Fix analysis display */
+    .analysis-items {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Fix password breach result display */
+    .breach-result {
+        flex-direction: column;
+    }
+    
+    .breach-icon {
+        width: 100%;
+        padding: 15px 0;
+    }
+    
+    .password-actions {
+        flex-direction: row; /* Keep buttons side by side */
+        width: 100%;
+    }
+    
+    .btn-generate,
+    .btn-copy {
+        flex: 1; /* Make buttons take equal space */
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+    
+    .password-options {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .password-option {
+        min-width: calc(50% - 10px); /* Two options per row with gap */
+        flex: 0 0 calc(50% - 10px);
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .strength-meter-container,
+    .breach-recommendation ul,
+    .security-tips ul {
+        font-size: 0.9rem;
+    }
+    
+    .breach-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    /* Improve spacing for form controls */
+    .form-control,
+    .input-field {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px;
+    }
+    
+    /* Ensure password visibility toggle is accessible */
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    
+    /* Adjust spinners and loaders */
+    .spinner {
+        width: 30px;
+        height: 30px;
+    }
+    
+    /* Make sure modals are properly sized */
+    .modal-content {
+        width: 95%;
+        margin: 10px auto;
+    }
+    
+    .navbar-links .navbar-link span,
+    .nav-right .nav-link span {
+        display: none;
+    }
+    
+    .navbar-links .navbar-link i,
+    .nav-right .nav-link i {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+    
+    .nav-link,
+    .navbar-link {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .password-actions {
+        flex-direction: column; /* Stack buttons on very small screens */
+        gap: 8px;
+    }
+}
+
+/* Fix any fixed width containers throughout the app */
+.container,
+.tool-container,
+.result-container,
+.search-container,
+.modal-content {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure all images and media are responsive */
+img, 
+iframe, 
+video, 
+embed, 
+object {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Password Generator Styling */
+.password-generator {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.password-output {
+    margin: 20px 0;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    text-align: center;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+}
+
+.password-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-generate {
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-generate:hover {
+    background-color: #5a51db;
+}
+
+.btn-copy {
+    background-color: #f1f3f5;
+    color: #4a5568;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-copy:hover {
+    background-color: #e9ecef;
+}
+
+/* Password options styling */
+.password-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.password-option {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

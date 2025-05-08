@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
-const db = require('./db'); // Ensure you have a database connection module
+const db = require('./db'); 
 
 // Register a new user
 async function registerUser(username, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
     const [result] = await db.query(query, [username, email, hashedPassword]);
-    return result.insertId; // Return the ID of the newly created user
+    return result.insertId; 
 }
 
 // Authenticate a user

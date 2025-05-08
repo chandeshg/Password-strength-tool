@@ -7,6 +7,7 @@ const session = require('express-session');
 const crypto = require('crypto');
 const { transporter, sendVerificationEmail } = require('./config/email');
 const { pool } = require('./config/database');
+const apiRoutes = require('./routes/api-routes');
 
 const app = express();
 
@@ -573,6 +574,121 @@ app.get('/reset-password', (req, res) => {
 app.get('/email-checker', checkAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'email-checker.html'));
 });
+
+// Add Have I Been Pwned email check endpoint
+app.post('/api/check-email-breach', checkAuth, async (req, res) => {
+    try {
+        const { email } = req.body;
+        const hibpApiKey = process.env.HIBP_API_KEY;
+        
+        if (!hibpApiKey) {
+            return res.status(500).json({
+                success: false,
+                message: 'HIBP API key not configured'
+            });
+        }
+
+        // Call the HIBP API to check if the email has been in a breach
+        const response = await fetch(`https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: {
+                'hibp-api-key': hibpApiKey,
+                'User-Agent': 'SecurePass-Password-Tool'
+            }
+        });
+
+        if (response.status === 404) {
+            // 404 means no breaches found for this email
+            return res.json({
+                success: true,
+                breached: false,
+                message: 'Good news! This email hasn\'t been found in any known data breaches.'
+            });
+        } else if (response.status === 200) {
+            // Email found in breaches
+            const breachData = await response.json();
+            return res.json({
+                success: true,
+                breached: true,
+                breaches: breachData,
+                message: `This email was found in ${breachData.length} data breach(es).`
+            });
+        } else {
+            // Handle rate limiting and other errors
+            return res.status(response.status).json({
+                success: false,
+                message: `API error: ${response.statusText}`
+            });
+        }
+    } catch (error) {
+        console.error('HIBP check error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to check email against breach database'
+        });
+    }
+});
+
+// Add password breach check endpoint using k-anonymity model
+app.post('/api/check-password-breach', async (req, res) => {
+    try {
+        const { password } = req.body;
+        
+        // Hash the password with SHA-1
+        const sha1Password = crypto.createHash('sha1').update(password).digest('hex').toUpperCase();
+        const prefix = sha1Password.substring(0, 5);
+        const suffix = sha1Password.substring(5);
+        
+        // Call the HIBP API with k-anonymity model (only send prefix)
+        const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
+            method: 'GET',
+            headers: {
+                'User-Agent': 'SecurePass-Password-Tool'
+            }
+        });
+        
+        if (!response.ok) {
+            return res.status(response.status).json({
+                success: false,
+                message: `API error: ${response.statusText}`
+            });
+        }
+        
+        const data = await response.text();
+        const breaches = data.split('\r\n');
+        
+        // Check if our suffix is in the returned list
+        let found = false;
+        let count = 0;
+        
+        for (const line of breaches) {
+            const [hash, breachCount] = line.split(':');
+            if (hash === suffix) {
+                found = true;
+                count = parseInt(breachCount);
+                break;
+            }
+        }
+        
+        return res.json({
+            success: true,
+            breached: found,
+            count: count,
+            message: found 
+                ? `This password has been found in data breaches ${count} times. You should change it immediately.` 
+                : 'Good news! This password hasn\'t been found in any known data breaches.'
+        });
+    } catch (error) {
+        console.error('Password breach check error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to check password against breach database'
+        });
+    }
+});
+
+// Add this line where you define your routes
+app.use('/api', apiRoutes);
 
 // Update server startup
 const PORT = process.env.PORT || 3000;

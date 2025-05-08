@@ -185,6 +185,8 @@ h1 {
     margin-bottom: 30px;
     text-align: center;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -282,4 +284,31 @@ h1 {
     .feature-card {
         padding: 20px;
     }
+}
+
+.password-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-wrapper .input-field {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6c757d;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.toggle-password:hover {
+    color: #4776E6;
 }

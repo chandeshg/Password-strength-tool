@@ -260,3 +260,77 @@ header {
         transform: translateY(-10px);
     }
 }
+
+/* Mobile responsive styles for login page */
+
+/* Base responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        width: 100%;
+    }
+    
+    .nav-content {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .nav-left {
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .nav-right {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        padding: 8px 15px;
+    }
+    
+    /* Login container adjustments */
+    .login-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 15px;
+        margin-top: 0;
+    }
+    
+    .login-form {
+        width: 100%;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .login-btn {
+        width: 100%;
+    }
+}
+
+/* Small screen specific adjustments */
+@media (max-width: 480px) {
+    .nav-logo {
+        font-size: 1.3rem;
+    }
+    
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+    
+    .login-form h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Fix for form inputs on iOS */
+input, 
+button, 
+select, 
+textarea {
+    font-size: 16px; /* Prevents zoom on focus in iOS */
+}

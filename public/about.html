@@ -4,86 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - SecurePass</title>
-    <link rel="stylesheet" href="./css/about.css">
+    <link rel="stylesheet" href="/css/welcome.css">
+    <link rel="stylesheet" href="/css/about.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // Same session check as index page
+        let userLoggedIn = false;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/user', {
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.username) {
+                    userLoggedIn = true;
+                    updateForLoggedInUser(data);
+                }
+            })
+            .catch(error => {
+                console.error('Session check error:', error);
+            });
+        });
+
+        // Same user update function as index page
+        function updateForLoggedInUser(userData) {
+            // ...existing code...
+        }
+
+        function handleLogout() {
+            // ...existing code...
+        }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="nav-container">
-            <a href="/" class="logo">
-                <i class="fas fa-shield-alt"></i>
-                SecurePass
-            </a>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/login.html" class="nav-link">Login</a>
-                <a href="/signup.html" class="nav-link">Sign Up</a>
-            </div>
+        <div class="logo">SecurePass</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/login.html">Login</a></li>
+                <li><a href="/signup.html">Sign Up</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>About SecurePass</h1>
-                <p>Empowering users with advanced password security tools</p>
-            </div>
-        </section>
-
-        <section class="about-section">
-            <div class="about-grid">
-                <div class="about-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h2>Our Mission</h2>
-                    <p>To provide a secure and user-friendly platform for managing and strengthening passwords in the digital age.</p>
-                </div>
-
-                <div class="about-card">
-                    <i class="fas fa-lock"></i>
-                    <h2>Security First</h2>
-                    <p>Built with state-of-the-art security practices to ensure your passwords stay protected.</p>
-                </div>
-
-                <div class="about-card">
-                    <i class="fas fa-code"></i>
-                    <h2>Technology</h2>
-                    <p>Powered by modern web technologies and advanced encryption standards.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="features-section">
-            <h2>Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
+    <main class="page-content">
+        <div class="container">
+            <h1>About SecurePass</h1>
+            
+            <section class="about-section">
+                <h2>Our Mission</h2>
+                <p>At SecurePass, our mission is to empower individuals and organizations to protect their digital identities through secure password practices. In today's interconnected world, strong password security is the first line of defense against cyber threats.</p>
+            </section>
+            
+            <section class="about-section">
+                <h2>What We Offer</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
                         <i class="fas fa-key"></i>
+                        <h3>Password Generation</h3>
+                        <p>Create cryptographically secure, unique passwords that meet the highest security standards.</p>
                     </div>
-                    <h3>Password Generator</h3>
-                    <p>Create strong, unique passwords instantly with our advanced algorithm.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Security Analysis</h3>
+                        <p>Evaluate the strength of your passwords against modern security benchmarks.</p>
                     </div>
-                    <h3>Strength Analysis</h3>
-                    <p>Check password strength against multiple security criteria.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
+                    <div class="feature-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Breach Detection</h3>
+                        <p>Check if your credentials have been compromised in known data breaches.</p>
                     </div>
-                    <h3>Password History</h3>
-                    <p>Track and manage your password changes securely.</p>
                 </div>
-            </div>
-        </section>
+            </section>
+            
+            <section class="about-section">
+                <h2>Our Story</h2>
+                <p>SecurePass was founded in 2023 with a simple goal: make password security accessible to everyone. We believe that security shouldn't be complicated or confusing.</p>
+                <p>Our team of cybersecurity experts has created tools that balance security, usability, and education, helping users understand the importance of good password habits.</p>
+            </section>
+            
+            <section class="about-section">
+                <h2>Privacy Commitment</h2>
+                <p>We take your privacy seriously. Our tools are designed with privacy-first principles:</p>
+                <ul>
+                    <li>Password checks are performed locally in your browser whenever possible</li>
+                    <li>We use k-anonymity techniques for breach checking, ensuring your passwords are never fully transmitted</li>
+                    <li>We don't store your generated passwords or checked passwords</li>
+                </ul>
+                <p>Learn more in our <a href="/privacy.html">Privacy Policy</a>.</p>
+            </section>
+        </div>
     </main>
 
-    <footer>
+    <footer class="main-footer">
         <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-shield-alt"></i> SecurePass</h3>
+                <p>Your trusted partner in password security</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/about.html" class="footer-link">About Us</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="/terms.html" class="footer-link">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:chandeshgunawardena@gmail.com"><i class="fas fa-envelope"></i> chandeshgunawardena@gmail.com</a></li>
+                    <li><a href="tel:+947773468164"><i class="fas fa-phone"></i> +94 777 346 8164</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
             <p>&copy; 2025 SecurePass. All rights reserved.</p>
         </div>
     </footer>

@@ -6,6 +6,97 @@
     <title>SecurePass - Password Security Tools</title>
     <link rel="stylesheet" href="/css/welcome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // Check if user is logged in when page loads
+        let userLoggedIn = false;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/user', {
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.username) {
+                    // User is logged in, update header
+                    userLoggedIn = true;
+                    updateForLoggedInUser(data);
+                    updateCTAButton();
+                }
+            })
+            .catch(error => {
+                console.error('Session check error:', error);
+            });
+        });
+        
+        function updateCTAButton() {
+            const ctaBtn = document.querySelector('.cta-btn');
+            if (ctaBtn && userLoggedIn) {
+                ctaBtn.href = '/password-tool';
+                ctaBtn.innerHTML = 'Go to Password Tools <i class="fas fa-arrow-right"></i>';
+            }
+        }
+
+        function updateForLoggedInUser(userData) {
+            // Replace the login/signup links with user info
+            const navUl = document.querySelector('nav ul');
+            navUl.innerHTML = `
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        ${userData.username}
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                            <i class="fas fa-user-circle"></i>
+                            <div class="user-info">
+                                <strong>${userData.username}</strong>
+                                <span>${userData.email || 'No email provided'}</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="/password-tool" class="dropdown-item">
+                            <i class="fas fa-key"></i> Password Tools
+                        </a>
+                        <a href="#" onclick="handleLogout()" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </li>
+            `;
+
+            // Add dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            dropdownToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdown.classList.toggle('active');
+                dropdownMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+
+        function handleLogout() {
+            fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            .then(() => {
+                window.location.reload();
+            })
+            .catch(() => {
+                window.location.reload();
+            });
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -56,5 +147,41 @@
             </div>
         </section>
     </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-shield-alt"></i> SecurePass</h3>
+                <p>Your trusted partner in password security</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/about.html" class="footer-link">About Us</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
+                    <li><a href="/terms.html" class="footer-link">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:chandeshgunawardena@gmail.com"><i class="fas fa-envelope"></i> chandeshgunawardena@gmail.com</a></li>
+                    <li><a href="tel:+947773468164"><i class="fas fa-phone"></i> +94 777 346 8164</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SecurePass. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
