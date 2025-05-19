@@ -73,13 +73,20 @@ async function deleteUser(id) {
     }
 }
 
+/**
+ * Handles user logout by clearing auth tokens and redirecting to login page
+ */
 function handleLogout() {
-    fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'include'
-    })
-    .then(() => window.location.href = '/admin-login')
-    .catch(console.error);
+    // Clear authentication token/session data
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    
+    // Clear any other user-related data
+    localStorage.removeItem('userData');
+    sessionStorage.removeItem('userData');
+    
+    // Redirect to the login page
+    window.location.href = '/login';
 }
 
 async function loadActiveSessions() {

@@ -3,6 +3,7 @@
     margin-bottom: 1rem;
     background: linear-gradient(135deg, #4776E6, #8E54E9);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
